@@ -2,22 +2,21 @@
 
 namespace App\Listeners;
 
-use Native\Laravel\Events\MenuBar\MenuBarClicked;
+use App\Events\ConvertItemClicked;
 use Native\Laravel\Dialog;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
 use Intervention\Image\Encoders\WebpEncoder;
 
-class ShowFilePicker
+class Convert
 {
-    public function handle(MenuBarClicked $event): void
+    public function handle(ConvertItemClicked $event): void
     {
         $results = Dialog::new()
             ->multiple()
     	    ->open();
     		
     	$manager = new ImageManager(new Driver());
-        
         
         foreach ($results as $path) {
             $image = $manager->read($path);
