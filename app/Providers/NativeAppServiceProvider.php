@@ -13,6 +13,7 @@ class NativeAppServiceProvider implements ProvidesPhpIni
      */
     public function boot(): void
     {
+        MenuBar::create()->onlyShowContextMenu();            
     }
 
     /**
