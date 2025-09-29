@@ -5,8 +5,6 @@ namespace App\Listeners;
 use App\Events\ConvertItemClicked;
 use Native\Laravel\Dialog;
 use Intervention\Image\ImageManager;
-use Intervention\Image\Drivers\Gd\Driver;
-use Intervention\Image\Encoders\WebpEncoder;
 use Native\Laravel\Facades\Settings;
 use Illuminate\Support\Facades\Storage;
 use ZipArchive;
@@ -33,12 +31,12 @@ class Convert
     
     protected function convertFiles(array $files): array
     {              		
-    	$manager = new ImageManager(new Driver());
+    	$manager = ImageManager::gd();
     	
         return array_map(function (string $path) use ($manager) {
             $image = $manager->read($path);
             
-            $converted = $image->encode(new WebpEncoder(quality: Settings::get('quality', 100)));
+            $converted = $image->encodeByExtension(Settings::get('type', 'webp'), Settings::get('quality', 100));
             
             return new ConvertedImage($converted, $path);
         }, $files);

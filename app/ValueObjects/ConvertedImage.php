@@ -3,6 +3,7 @@
 namespace App\ValueObjects;
 
 use Intervention\Image\EncodedImage;
+use Native\Laravel\Facades\Settings;
 
 class ConvertedImage
 {
@@ -15,7 +16,7 @@ class ConvertedImage
     public function __construct(EncodedImage $converted, string $path) {
         $this->converted = $converted;        
         
-        $this->name = pathinfo($path, PATHINFO_FILENAME).'.webp';  
+        $this->name = pathinfo($path, PATHINFO_FILENAME).'.'.Settings::get('type', 'webp');  
              
         $this->path = dirname($path).'/'.$this->name;
     }

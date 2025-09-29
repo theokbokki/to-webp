@@ -7,6 +7,7 @@ use Native\Laravel\Contracts\ProvidesPhpIni;
 use Native\Laravel\Facades\Menu;
 use App\Events\ConvertItemClicked;
 use App\Events\QualityItemClicked;
+use App\Events\TypeItemClicked;
 use App\Events\ZipItemClicked;
 use Native\Laravel\Facades\Settings;
 
@@ -29,6 +30,11 @@ class NativeAppServiceProvider implements ProvidesPhpIni
                         $this->qualityItem('80'),
                         $this->qualityItem('100', true),
                     )->label('Quality'),
+                    Menu::make(
+                        $this->typeItem('jpeg'),
+                        $this->typeItem('webp', true),
+                        $this->typeItem('png'),
+                    )->label('File type'),
                     Menu::checkbox('Save as zip')->event(ZipItemClicked::class),
                     Menu::separator(),
                     Menu::label('Convert')->event(ConvertItemClicked::class),
@@ -51,5 +57,11 @@ class NativeAppServiceProvider implements ProvidesPhpIni
     {        
         return Menu::radio($value.'%', checked: Settings::get('quality', $default ? $value : null) === $value )
             ->event(QualityItemClicked::class);
+    }
+    
+    public function typeItem(string $value, bool $default = false)
+    {        
+        return Menu::radio($value, checked: Settings::get('type', $default ? $value : null) === $value )
+            ->event(TypeItemClicked::class);
     }
 }
