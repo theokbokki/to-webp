@@ -7,6 +7,7 @@ use Native\Laravel\Contracts\ProvidesPhpIni;
 use Native\Laravel\Facades\Menu;
 use App\Events\ConvertItemClicked;
 use App\Events\QualityItemClicked;
+use App\Events\ZipItemClicked;
 use Native\Laravel\Facades\Settings;
 
 class NativeAppServiceProvider implements ProvidesPhpIni
@@ -22,14 +23,13 @@ class NativeAppServiceProvider implements ProvidesPhpIni
             ->withContextMenu(
                 Menu::make(
                     Menu::make(
-                        Menu::make(
-                            $this->qualityItem('20'),
-                            $this->qualityItem('40'),
-                            $this->qualityItem('60'),
-                            $this->qualityItem('80'),
-                            $this->qualityItem('100', true),
-                        )->label('Quality'),
-                    )->label('Settings'),
+                        $this->qualityItem('20'),
+                        $this->qualityItem('40'),
+                        $this->qualityItem('60'),
+                        $this->qualityItem('80'),
+                        $this->qualityItem('100', true),
+                    )->label('Quality'),
+                    Menu::checkbox('Save as zip')->event(ZipItemClicked::class),
                     Menu::separator(),
                     Menu::label('Convert')->event(ConvertItemClicked::class),
                     Menu::separator(),
